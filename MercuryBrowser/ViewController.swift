@@ -13,13 +13,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tableView: UITableView!
     
     //    let listOfMercuryItems = ["car-image", "liquid", "thermometer"]
+    
+    // Create empty MercuryList of MercuryItems
     var listOfMercuryItems = MercuryList(mercury: [])
     let urlString = "https://raw.githubusercontent.com/rmirabelli/mercuryserver/master/mercury.json"
-
+    
+    // Define a MercuryList
     struct MercuryList: Codable {
         let mercury: [MercuryItem]
     }
     
+    // Decode JSON code from url
     func getMercuryItems (urlString: String) {
         
         let session = URLSession(configuration: .ephemeral)
@@ -38,6 +42,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    // Add image from url to current MercuryCell
     func getItemImage (cell: MercuryCell, urlString: String) {
         
         let session = URLSession(configuration: .ephemeral)
@@ -55,6 +60,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         }
     
+    // Setup
     override func viewDidLoad() {
         
         tableView.dataSource = self
@@ -63,16 +69,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     }
     
+    // Set number of rows to length of list
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return listOfMercuryItems.mercury.count
         }
     
+    // Populate cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
+        // Assign MercuryItem elements to immutable vars
         let name = listOfMercuryItems.mercury[indexPath.item].name
         let type = listOfMercuryItems.mercury[indexPath.item].type
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         
+        // Send vars to corresponding cells
         if let mercuryCell = cell as? MercuryCell {
             mercuryCell.mercuryName.text = "\(name)"
             mercuryCell.mercuryType.text = "\(type)"
